@@ -1,4 +1,4 @@
---- //create private repo First i.e ayazway/priv-repo 
+--- //create or Docker private repo First i.e ayazway/priv-repo 
   - hosts: local
     user: ec2-user
     become: yes
