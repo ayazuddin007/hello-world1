@@ -1,0 +1,9 @@
+--- # create service for deployment
+- hosts: kubernetes
+  user: root
+  become: yes
+  connection: ssh
+
+  tasks:
+  - name: create a service
+    command: kubectl apply -f valaxy-service.yml
