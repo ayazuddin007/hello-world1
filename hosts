@@ -3,3 +3,7 @@ localhost
 
 [docker-host]
 172.31.36.211
+
+[kubernetes]
+172.31.37.2
+
