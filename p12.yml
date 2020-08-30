@@ -1,4 +1,4 @@
---- // for Docker private repo only
+---  # for Docker private repo only
   - hosts: docker-host
     user: ec2-user
     become: yes
