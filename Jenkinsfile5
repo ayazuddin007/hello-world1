@@ -1,0 +1,56 @@
+def ansibleServerIP = '<Ansible Server Private IP>'
+def pushDockerImage = 'ansible-playbook -i hosts p11.yml'
+def createDockerContainer = 'ansible-playbook -i hosts p12.yml'
+
+pipeline {
+    agent any
+    
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+        
+    }
+    
+    stages {
+        stage("Git Clone") {
+            steps {
+                git branch: 'master', credentialsId: 'gitCredentials', url: 'https://github.com/ayazuddin007/hello-world1.git'
+            }
+        }
+        stage("Maven Build") {
+            steps {
+                sh "mvn clean install"
+                sh "mv webapp/target/*.war webapp/target/myweb.war"
+            }
+        }
+        stage("Copy war to Ansible") {
+            steps {
+                sshagent(['ansibleCredentials']) {
+                    // Copy war file to Ansible Server
+                    sh "scp -o StrictHostKeyChecking=no webapp/target/*.war ec2-user@${ansibleServerIP}:/home/ec2-user/"
+                }
+            }
+        }
+        stage("Push Docker Image to Docker Hub") {
+            steps {
+                sshagent(['ansibleCredentials']) {
+                        // Copy Dockerfile,hosts and p11.yml to Ansible Server
+                        sh "scp -o StrictHostKeyChecking=no Dockerfile hosts p11.yml ec2-user@${ansibleServerIP}:/home/ec2-user/"
+                        // Push Docker Image to Docker Hub by Runnning p11.yml on localhost(Ansible)
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${ansibleServerIP} ${pushDockerImage}"
+                }
+            }
+        }
+        stage("Create Docker Container") {
+            steps {
+                sshagent(['ansibleCredentials']) {
+                        // Copy p12.yml to Ansible Server
+                        sh "scp -o StrictHostKeyChecking=no p12.yml ec2-user@${ansibleServerIP}:/home/ec2-user/"
+                        // Create Docker Container by Runnning p12.yml on Docker-Host
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${ansibleServerIP} ${createDockerContainer}"
+                }
+            }
+        }
+        
+        
+    }
+}
