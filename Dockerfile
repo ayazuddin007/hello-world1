@@ -5,5 +5,5 @@ From tomcat:8
 MAINTAINER "ayaz@gmail.com" 
 
 # Copy war file
-COPY ./webapp.war /usr/local/tomcat/webapps
+COPY ./*.war /usr/local/tomcat/webapps
 
