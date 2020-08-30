@@ -5,5 +5,8 @@
   connection: ssh
 
   tasks:
+  - name: copy a service file to Kubernetes
+    copy: src=./valaxy-service.yml dest=/root/
+    
   - name: create a service
     command: kubectl apply -f valaxy-service.yml
