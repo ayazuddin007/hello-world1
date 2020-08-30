@@ -1,4 +1,4 @@
---- //create or Docker private repo First
+--- # create or Docker private repo i.e ayazway/priv-repo
   - hosts: ansible-server
     user: ec2-user
     become: yes
