@@ -18,8 +18,8 @@
       - name: Tag docker image
         command: docker tag myimg ayazway/priv-repo
 
-      - name: docker hub credentials
-        command: docker login -u "ayazway" -p dhPassword docker.io
+      #- name: docker hub credentials
+       # command: docker login -u "ayazway" -p dhPassword docker.io
         
       - name: Push docker image to dockerhub
         command: docker push ayazway/priv-repo
