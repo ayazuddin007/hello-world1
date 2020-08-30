@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+        
+    }
+    
+    stages {
+        stage("Git Clone") {
+            steps {
+                git branch: 'master', credentialsId: 'gitCredentials', url: 'https://github.com/ayazuddin007/hello-world1.git'
+            }
+        }
+        stage("Maven Build") {
+            steps {
+                sh "mvn clean install"
+                sh "mv webapp/target/*.war webapp/target/myweb.war"
+            }
+        }
+        stage("Deploy To Tomcat") {
+            steps {
+                sshagent(['tomcatCredentials']) {
+                    sh "scp -o StrictHostKeyChecking=no webapp/target/myweb.war ec2-user@<Tomcat Server Private IP>:/opt/tomcat/webapps/"
+                    sh "ssh ec2-user@<Tomcat Server Private IP> /opt/tomcat/bin/shutdown.sh"
+                    sh "ssh ec2-user@<Tomcat Server Private IP> /opt/tomcat/bin/startup.sh"
+                }
+            }
+        }
+    }
+}
