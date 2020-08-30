@@ -1,4 +1,4 @@
---- // Docker public repo
+--- # Docker public repo
   - hosts: docker-host
     user: ec2-user
     become: yes
