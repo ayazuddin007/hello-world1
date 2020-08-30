@@ -1,5 +1,5 @@
-[local]
-localhost
+[ansible-server]
+172.31.7.186
 
 [docker-host]
 172.31.36.211
