@@ -1,4 +1,4 @@
---- // Docker public repo 
+--- # Docker public repo 
   - hosts: ansible-server
     user: ec2-user
     become: yes
