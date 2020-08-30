@@ -1,5 +1,5 @@
 --- //create or Docker private repo First i.e ayazway/priv-repo 
-  - hosts: local
+  - hosts: ansible-server
     user: ec2-user
     become: yes
     connection: ssh
