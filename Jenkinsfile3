@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    
+    stages {
+        stage("Clone") {
+            steps {
+                git branch: 'master', credentialsId: 'gitCredentials', url: 'https://github.com/ayazuddin007/hello-world1.git'
+            }
+        }
+        stage("Build") {
+            steps {
+                sh "mvn clean install";
+            }
+        }
+        
+    }
+}
